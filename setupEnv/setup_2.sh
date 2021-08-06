@@ -15,7 +15,9 @@ sudo tar -C /usr/local -xzf go1.16.7.linux-amd64.tar.gz
 echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee -a /etc/profile && \
 echo 'export GOPATH=$HOME/go' | tee -a $HOME/.bashrc && \
 echo 'export PATH=$PATH:$GOROOT/bin:$GOPATH/bin' | tee -a $HOME/.bashrc && \
-mkdir -p $HOME/go/{src,pkg,bin}
+mkdir -p $HOME/go/src && \
+mkdir -p $HOME/go/pkg && \
+mkdir -p $HOME/go/bin &&
 
 
 echo ''
