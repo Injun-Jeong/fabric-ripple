@@ -1,0 +1,222 @@
+# 도커 컨테이너 구성 파일
+
+## 버전 정보 설정
+version: '2'
+
+
+## 도커에서 사용할 네트워크 이름 설정
+networks:
+  exchange:
+
+
+## 컨테이너 서비스 입력
+services:
+  ### 시스템 설정
+  zookeeper1.exchange.com:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: zookeeper1.exchange.com
+    container_name: zookeeper1.exchange.com
+    networks:
+      - exchange
+
+  zookeeper2.exchange.com:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: zookeeper2.exchange.com
+    container_name: zookeeper2.exchange.com
+    networks:
+      - exchange
+
+  zookeeper3.exchange.com:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: zookeeper3.exchange.com
+    container_name: zookeeper3.exchange.com
+    networks:
+      - exchange
+
+  kafka1.exchange.com:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: kafka1.exchange.com
+    container_name: kafka1.exchange.com
+    networks:
+      - exchange
+
+  kafka2.exchange.com:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: kafka2.exchange.com
+    container_name: kafka2.exchange.com
+    networks:
+      - exchange
+
+  kafka3.exchange.com:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: kafka3.exchange.com
+    container_name: kafka3.exchange.com
+    networks:
+      - exchange
+
+  kafka4.exchange.com:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: kafka4.exchange.com
+    container_name: kafka4.exchange.com
+    networks:
+      - exchange
+
+  cli1:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: cli1
+    container_name: cli1
+    networks:
+      - exchange
+
+  cli2:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: cli2
+    container_name: cli2
+    networks:
+      - exchange
+
+  ### 노드 설정
+  orderer1.exchange.com:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: orderer1.exchange.com
+    container_name: orderer1.exchange.com
+    networks:
+      - exchange
+
+  orderer2.exchange.com:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: orderer2.exchange.com
+    container_name: orderer2.exchange.com
+    networks:
+      - exchange
+
+  peer0.korea.exchange.com:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: peer0.korea.exchange.com
+    container_name: peer0.korea.exchange.com
+    depends_on:
+      - orderer1.exchange.com
+      - orderer2.exchange.com
+      - couchdb1
+    networks:
+      - exchange
+
+  couchdb1:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: couchdb1
+    container_name: couchdb1
+    networks:
+      - exchange
+
+  peer1.korea.exchange.com:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: peer1.korea.exchange.com
+    container_name: peer1.korea.exchange.com
+    depends_on:
+      - orderer1.exchange.com
+      - orderer2.exchange.com
+      - couchdb2
+    networks:
+      - exchange
+
+  couchdb2:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: couchdb2
+    container_name: couchdb2
+    networks:
+      - exchange
+
+  peer0.customer.exchange.com:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: peer0.customer.exchange.com
+    container_name: peer0.customer.exchange.com
+    depends_on:
+      - orderer1.exchange.com
+      - orderer2.exchange.com
+      - couchdb3
+    networks:
+      - exchange
+
+  couchdb3:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: couchdb3
+    container_name: couchdb3
+    networks:
+      - exchange
+
+  peer1.customer.exchange.com:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: peer1.customer.exchange.com
+    container_name: peer1.customer.exchange.com
+    depends_on:
+      - orderer1.exchange.com
+      - orderer2.exchange.com
+      - couchdb4
+    networks:
+      - exchange
+
+  couchdb4:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: couchdb4
+    container_name: couchdb4
+    networks:
+      - exchange
+
+  peer0.usa.exchange.com:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: peer0.usa.exchange.com
+    container_name: peer0.usa.exchange.com
+    depends_on:
+      - orderer1.exchange.com
+      - orderer2.exchange.com
+      - couchdb5
+    networks:
+      - exchange
+
+  couchdb5:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: couchdb5
+    container_name: couchdb5
+    networks:
+      - exchange
+
+  peer1.usa.exchange.com:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: peer1.usa.exchange.com
+    container_name: peer1.usa.exchange.com
+    depends_on:
+      - orderer1.exchange.com
+      - orderer2.exchange.com
+      - couchdb6
+    networks:
+      - exchange
+
+  couchdb6:
+    extends:
+      file: ./docker-compose-base/docker-compose-base.yaml
+      service: couchdb6
+    container_name: couchdb6
+    networks:
+      - exchange

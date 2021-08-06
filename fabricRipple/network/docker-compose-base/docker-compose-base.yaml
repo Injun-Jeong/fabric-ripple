@@ -1,0 +1,311 @@
+# 도커 컨테이너 구성 파일
+
+## 버전 정보 설정
+version: '2'
+
+## 컨테이너 서비스 입력
+services:
+  ### 시스템 설정
+  zookeeper1.exchange.com:
+    extends:
+      file: ./system-base.yaml
+      service: zookeeper
+    container_name: zookeeper1.exchange.com
+    environment:
+      - ZOO_MY_ID=1
+    ports:
+      - 2181:2181
+      - 2888:2888
+      - 3888:3888
+
+  zookeeper2.exchange.com:
+    extends:
+      file: ./system-base.yaml
+      service: zookeeper
+    container_name: zookeeper2.exchange.com
+    environment:
+      - ZOO_MY_ID=2
+    ports:
+      - 12181:2181
+      - 12888:2888
+      - 13888:3888
+
+  zookeeper3.exchange.com:
+    extends:
+      file: ./system-base.yaml
+      service: zookeeper
+    container_name: zookeeper3.exchange.com
+    environment:
+      - ZOO_MY_ID=3
+    ports:
+      - 22181:2181
+      - 22888:2888
+      - 23888:3888
+
+  kafka1.exchange.com:
+    extends:
+      file: ./system-base.yaml
+      service: kafka
+    container_name: kafka1.exchange.com
+    environment:
+      - KAFKA_BROKER_ID=1
+    ports:
+      - 9092:9092
+      - 9093:9093
+
+  kafka2.exchange.com:
+    extends:
+      file: ./system-base.yaml
+      service: kafka
+    container_name: kafka2.exchange.com
+    environment:
+      - KAFKA_BROKER_ID=2
+    ports:
+      - 10092:9092
+      - 10093:9093
+
+  kafka3.exchange.com:
+    extends:
+      file: ./system-base.yaml
+      service: kafka
+    container_name: kafka3.exchange.com
+    environment:
+      - KAFKA_BROKER_ID=3
+    ports:
+      - 11092:9092
+      - 11093:9093
+
+  kafka4.exchange.com:
+    extends:
+      file: ./system-base.yaml
+      service: kafka
+    container_name: kafka4.exchange.com
+    environment:
+      - KAFKA_BROKER_ID=4
+    ports:
+      - 12092:9092
+      - 12093:9093
+
+  cli1:
+    extends:
+      file: ./system-base.yaml
+      service: cli-base
+    container_name: cli1
+    environment:
+      - CORE_PEER_ADDRESS=peer0.korea.exchange.com:7051
+      - CORE_PEER_LOCALMSPID=KoreaOrg
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/korea.exchange.com/users/Admin@korea.exchange.com/msp
+
+  cli2:
+    extends:
+      file: ./system-base.yaml
+      service: cli-base
+    container_name: cli2
+    environment:
+      - CORE_PEER_ADDRESS=peer0.usa.exchange.com:7051
+      - CORE_PEER_LOCALMSPID=USAOrg
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/usa.exchange.com/users/Admin@usa.exchange.com/msp
+
+  ### 노드 설정
+  orderer1.exchange.com:
+    extends:
+      file: ./node-base.yaml
+      service: orderer-base
+    container_name: orderer1.exchange.com
+    ports:
+      - 7050:7050
+    volumes:
+      - ../config/:/etc/hyperledger/configtx
+      - ../crypto-config/ordererOrganizations/exchange.com/orderers/orderer1.exchange.com/:/etc/hyperledger/msp/orderer
+
+  orderer2.exchange.com:
+    extends:
+      file: ./node-base.yaml
+      service: orderer-base
+    container_name: orderer2.exchange.com
+    ports:
+      - 8050:7050
+    volumes:
+      - ../config/:/etc/hyperledger/configtx
+      - ../crypto-config/ordererOrganizations/exchange.com/orderers/orderer2.exchange.com/:/etc/hyperledger/msp/orderer
+
+  peer0.korea.exchange.com:
+    extends:
+      file: ./node-base.yaml
+      service: peer-base
+    container_name: peer0.korea.exchange.com
+    environment:
+      - CORE_PEER_ID=peer0.korea.exchange.com
+      - CORE_PEER_LOCALMSPID=KoreaOrg
+      - CORE_PEER_ADDRESS=peer0.korea.exchange.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.korea.exchange.com:7051
+      - CORE_PEER_GOSSIP_ENDPOINT=peer0.korea.exchange.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.korea.exchange.com:7051
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb1:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    ports:
+      - 7051:7051
+      - 7053:7053
+    volumes:
+      - /var/run/:/host/var/run/
+      - ../crypto-config/peerOrganizations/korea.exchange.com/peers/peer0.korea.exchange.com/msp:/etc/hyperledger/msp/peer
+      - ../crypto-config/peerOrganizations/korea.exchange.com/users:/etc/hyperledger/msp/users
+      - ../config:/etc/hyperledger/configtx
+
+  couchdb1:
+    extends:
+      file: ./system-base.yaml
+      service: couchdb-base
+    container_name: couchdb1
+    ports:
+      - 5984:5984
+
+  peer1.korea.exchange.com:
+    extends:
+      file: ./node-base.yaml
+      service: peer-base
+    container_name: peer1.korea.exchange.com
+    environment:
+      - CORE_PEER_ID=peer1.korea.exchange.com
+      - CORE_PEER_LOCALMSPID=KoreaOrg
+      - CORE_PEER_ADDRESS=peer1.korea.exchange.com:7051
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb2:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    ports:
+      - 8051:7051
+      - 8053:7053
+    volumes:
+      - /var/run/:/host/var/run/
+      - ../crypto-config/peerOrganizations/korea.exchange.com/peers/peer1.korea.exchange.com/msp:/etc/hyperledger/msp/peer
+      - ../crypto-config/peerOrganizations/korea.exchange.com/users:/etc/hyperledger/msp/users
+      - ../config:/etc/hyperledger/configtx
+
+  couchdb2:
+    extends:
+      file: ./system-base.yaml
+      service: couchdb-base
+    container_name: couchdb2
+    ports:
+      - 6984:5984
+
+  peer0.customer.exchange.com:
+    extends:
+      file: ./node-base.yaml
+      service: peer-base
+    container_name: peer0.customer.exchange.com
+    environment:
+      - CORE_PEER_ID=peer0.customer.exchange.com
+      - CORE_PEER_LOCALMSPID=CustomerOrg
+      - CORE_PEER_ADDRESS=peer0.customer.exchange.com:7051
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb3:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    ports:
+      - 9051:7051
+      - 9053:7053
+    volumes:
+      - /var/run/:/host/var/run/
+      - ../crypto-config/peerOrganizations/customer.exchange.com/peers/peer0.customer.exchange.com/msp:/etc/hyperledger/msp/peer
+      - ../crypto-config/peerOrganizations/customer.exchange.com/users:/etc/hyperledger/msp/users
+      - ../config:/etc/hyperledger/configtx
+
+  couchdb3:
+    extends:
+      file: ./system-base.yaml
+      service: couchdb-base
+    container_name: couchdb3
+    ports:
+      - 7984:5984
+
+  peer1.customer.exchange.com:
+    extends:
+      file: ./node-base.yaml
+      service: peer-base
+    container_name: peer1.customer.exchange.com
+    environment:
+      - CORE_PEER_ID=peer1.customer.exchange.com
+      - CORE_PEER_LOCALMSPID=CustomerOrg
+      - CORE_PEER_ADDRESS=peer1.customer.exchange.com:7051
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb4:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    ports:
+      - 10051:7051
+      - 10053:7053
+    volumes:
+      - /var/run/:/host/var/run/
+      - ../crypto-config/peerOrganizations/customer.exchange.com/peers/peer1.customer.exchange.com/msp:/etc/hyperledger/msp/peer
+      - ../crypto-config/peerOrganizations/customer.exchange.com/users:/etc/hyperledger/msp/users
+      - ../config:/etc/hyperledger/configtx
+
+  couchdb4:
+    extends:
+      file: ./system-base.yaml
+      service: couchdb-base
+    container_name: couchdb4
+    ports:
+      - 8984:5984
+
+  peer0.usa.exchange.com:
+    extends:
+      file: ./node-base.yaml
+      service: peer-base
+    container_name: peer0.usa.exchange.com
+    environment:
+      - CORE_PEER_ID=peer0.usa.exchange.com
+      - CORE_PEER_LOCALMSPID=USAOrg
+      - CORE_PEER_ADDRESS=peer0.usa.exchange.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.usa.exchange.com:7051
+      - CORE_PEER_GOSSIP_ENDPOINT=peer0.usa.exchange.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.usa.exchange.com:7051
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb5:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    ports:
+      - 11051:7051
+      - 11053:7053
+    volumes:
+      - /var/run/:/host/var/run/
+      - ../crypto-config/peerOrganizations/usa.exchange.com/peers/peer0.usa.exchange.com/msp:/etc/hyperledger/msp/peer
+      - ../crypto-config/peerOrganizations/usa.exchange.com/users:/etc/hyperledger/msp/users
+      - ../config:/etc/hyperledger/configtx
+
+  couchdb5:
+    extends:
+      file: ./system-base.yaml
+      service: couchdb-base
+    container_name: couchdb5
+    ports:
+      - 9984:5984
+
+  peer1.usa.exchange.com:
+    extends:
+      file: ./node-base.yaml
+      service: peer-base
+    container_name: peer1.usa.exchange.com
+    environment:
+      - CORE_PEER_ID=peer1.usa.exchange.com
+      - CORE_PEER_LOCALMSPID=USAOrg
+      - CORE_PEER_ADDRESS=peer1.usa.exchange.com:7051
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb6:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    ports:
+      - 12051:7051
+      - 12053:7053
+    volumes:
+      - /var/run/:/host/var/run/
+      - ../crypto-config/peerOrganizations/usa.exchange.com/peers/peer1.usa.exchange.com/msp:/etc/hyperledger/msp/peer
+      - ../crypto-config/peerOrganizations/usa.exchange.com/users:/etc/hyperledger/msp/users
+      - ../config:/etc/hyperledger/configtx
+
+  couchdb6:
+    extends:
+      file: ./system-base.yaml
+      service: couchdb-base
+    container_name: couchdb6
+    ports:
+      - 10984:5984
+
