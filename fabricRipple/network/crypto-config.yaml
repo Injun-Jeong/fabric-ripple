@@ -1,0 +1,30 @@
+# 인증서를 발급하기 위한 설정 파일
+
+OrdererOrgs:
+  - Name: Orderer
+    Domain: exchange.com
+    Specs:
+      - Hostname: orderer1
+      - Hostname: orderer2
+
+PeerOrgs:
+  - Name: Korea
+    Domain: korea.exchange.com
+    Template:
+      Count: 2  # (m.t.) Korea 조직 내, 노드의 수
+    Users:
+      Count: 1
+
+  - Name: USA
+    Domain: usa.exchange.com
+    Template:
+      Count: 2  # (m.t.) USA 조직 내, 노드의 수
+    Users:
+      Count: 1
+
+  - Name: Customer
+    Domain: customer.exchange.com
+    Template:
+      Count: 2  # (m.t.) Customer 조직 내, 노드의 수
+    Users:
+      Count: 1

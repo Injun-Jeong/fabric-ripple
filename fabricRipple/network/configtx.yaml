@@ -1,0 +1,88 @@
+# 오더링 서비스 노드의 제네시스 블록과 채널에 대한 정보, 조직에 대한 정보를 담을 파일
+
+## 조직에 대한 정보
+Organizations:
+  - &OrdererOrg
+    Name: OrererOrg
+    ID: OrdererOrg
+    MSPDir: crypto-config/ordererOrganizations/exchange.com/msp
+
+  - &KoreaOrg
+    Name: KoreaOrg
+    ID: KoreaOrg
+    MSPDir: crypto-config/peerOrganizations/korea.exchange.com/msp
+    AnchorPeers:
+      - Host: peer0.korea.exchange.com
+        Port: 7051
+
+  - &USAOrg
+    Name: USAOrg
+    ID: USAOrg
+    MSPDir: crypto-config/peerOrganizations/usa.exchange.com/msp
+    AnchorPeers:
+      - Host: peer0.usa.exchange.com
+        Port: 7051
+
+  - &CustomerOrg
+    Name: CustomerOrg
+    ID: CustomerOrg
+    MSPDir: crypto-config/peerOrganizations/customer.exchange.com/msp
+    AnchorPeers:
+      - Host: peer0.customer.exchange.com
+        Port: 7051
+
+
+## 오더링 서비스 노드 정보
+Orderer: &OrdererDefaults
+  OrdererType: kafka
+  Addresses:
+    - orderer1.exchange.com:7050
+    - orderer2.exchange.com:7050
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  Kafka:
+    Brokers:
+      - kafka1.exchange.com:9092
+      - kafka2.exchange.com:9092
+      - kafka3.exchange.com:9092
+      - kafka4.exchange.com:9092
+  Organizations:
+
+
+Application: &ApplicationDefaults
+  Organizations:
+
+
+## 오더러 제네시스 블록 및 채널에 대한 프로파일 정보를 정의
+Profiles:
+  OrdererGenesis:
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *OrdererOrg
+
+    Consortiums:
+      SampleConsortium:
+        Organizations:
+          - *KoreaOrg
+          - *USAOrg
+          - *CustomerOrg
+
+  ChannelKorea:
+    Consortium: SampleConsortium
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *KoreaOrg
+        - *CustomerOrg
+
+  ChannelUSA:
+    Consortium: SampleConsortium
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *USAOrg
+        - *CustomerOrg
