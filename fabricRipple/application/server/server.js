@@ -9,11 +9,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/ripple', ripple);
 
 app.get('/', (req, res) => {
-    res.send('welcome ripple exchange system');
+    res.send('ripple exchange system on hyperledger fabric network');
 });
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://158.247.203.166:${port}`);
+    console.log(`app listening at http://158.247.203.166:${port}`);
 })
 
 module.exports = app;
