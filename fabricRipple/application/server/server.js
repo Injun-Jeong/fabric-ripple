@@ -1,11 +1,12 @@
 const express = require('express');
-
+const user = require('./api/user');
 const wallet = require('./api/wallet');
 const app = express();
 const port = 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/user', user);
 app.use('/wallet', wallet);
 
 app.get('/', (req, res) => {
