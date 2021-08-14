@@ -1,8 +1,8 @@
 {
-  "name": "Fabric-Ripple-Go",
+  "name": "Fabric-Ripple",
   "version": "1.0.0",
   "description": "Hyperledger Fabric Ripple Exchange System",
-  "main": "server.js",
+  "main": "./server/server.js",
   "dependencies": {
     "fabric-ca-client": "^1.4.0",
     "fabric-client": "^1.4.0",
@@ -11,7 +11,8 @@
     "body-parser": "latest",
     "ejs": "latest",
     "http": "latest",
-    "sync-request": "latest"
+    "sync-request": "latest",
+    "qrcode": "latest"
   },
   "license": "Apache-2.0",
   "keywords": [
