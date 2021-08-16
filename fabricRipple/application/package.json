@@ -4,7 +4,6 @@
   "description": "Hyperledger Fabric Ripple Exchange System",
   "main": "./server/server.js",
   "dependencies": {
-    "@elastic/elasticsearch": "^7.14.0",
     "body-parser": "latest",
     "ejs": "latest",
     "express": "latest",
@@ -14,7 +13,8 @@
     "http": "latest",
     "qrcode": "latest",
     "sync-request": "latest",
-    "firebase": "latest"
+    "firebase": "latest",
+    "grpc": "^1.9.1"
   },
   "license": "Apache-2.0",
   "keywords": [

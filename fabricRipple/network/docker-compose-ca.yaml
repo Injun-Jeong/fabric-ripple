@@ -1,0 +1,37 @@
+version: '2'
+
+networks:
+  exchange:
+
+services:
+  ca.korea.exchange.com:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.korea.exchange.com
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.korea.exchange.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/e904a2ca209b09ac209c1ae8c1eabe9f899eede6590288b93c80684b6280d0e2_sk
+    ports:
+      - 7054:7054
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/korea.exchange.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.korea.exchange.com
+    networks:
+      - exchange
+
+  ca.usa.exchange.com:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.usa.exchange.com
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.usa.exchange.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ed4cda1c945e270692dabb23f055a499d862fbb547aee02f42719e2485df7b54_skc
+    ports:
+      - 8054:7054
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/usa.exchange.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.usa.exchange.com
+    networks:
+      - exchange
