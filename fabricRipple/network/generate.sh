@@ -32,8 +32,8 @@ mkdir config
 # 생성되는 트랜잭션 파일의 이름과 채널 ID를 다르게 해주어야 한다.
 # 그리고 채널 ID로는 대문자가 불가능한 것으로 보인다
 # 즉, channelKorea 가 아닌 channelkorea로 해야 한다.
-./bin/configtxgen -profile ChannelKorea -outputCreateChannelTx ./config/korea.tx -channelID channelkorea
-./bin/configtxgen -profile ChannelUSA -outputCreateChannelTx ./config/usa.tx -channelID channelusa
+./bin/configtxgen -profile ChannelKorea -outputCreateChannelTx ./config/generateChannelKorea.tx -channelID channelkorea
+./bin/configtxgen -profile ChannelUSA -outputCreateChannelTx ./config/generateChannelUsa.tx -channelID channelusa
 
 ./bin/configtxgen -profile ChannelKorea -outputAnchorPeersUpdate ./config/KoreaOrgAnchors.tx -channelID channelkorea -asOrg KoreaOrg
 ./bin/configtxgen -profile ChannelUSA -outputAnchorPeersUpdate ./config/USAOrgAnchors.tx -channelID channelusa -asOrg USAOrg
