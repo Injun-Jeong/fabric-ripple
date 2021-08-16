@@ -25,7 +25,7 @@ services:
       - CORE_LOGGING_PEER=debug
       - CORE_CHAINCODE_LOGGING_LEVEL=debug
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=net_acorn
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=net_exchange
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: peer node start
