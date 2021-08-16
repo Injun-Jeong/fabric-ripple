@@ -1,0 +1,83 @@
+{
+  "name": "fabric-ripple-exchange-network",
+  "version": "1.0.0",
+  "client": {
+    "organization": "Korea",
+    "connection": {
+      "timeout": {
+        "peer": {
+          "endorser": "300"
+        },
+        "orderer": "300"
+      }
+    }
+  },
+  "channels": {
+    "channelkorea": {
+      "orderers": [
+        "orderer1.exchange.com"
+      ],
+      "peers": {
+        "peer0.korea.exchange.com": {}
+      }
+    }
+  },
+  "organizations": {
+    "Korea": {
+      "mspid": "KoreaOrg",
+      "peers": [
+        "peer0.korea.exchange.com"
+      ],
+      "certificateAuthorities": [
+        "ca.korea.exchange.com"
+      ],
+      "adminPrivateKey": {
+        "path": "../../network/crypto-config/peerOrganizations/korea.exchange.com/users/Admin@korea.exchange.com/msp/keystore/6abe22f557c0d2b1c138a9ed6cbba271e07dd121a72cd417306f152585f1816d_sk"
+      },
+      "signedCert": {
+        "path": "../../network/crypto-config/peerOrganizations/korea.exchange.com/users/Admin@korea.exchange.com/msp/signcerts/Admin@korea.exchange.com-cert.pem"
+      }
+    }
+  },
+  "orderers": {
+    "orderer1.exchange.com": {
+      "url": "grpc://158.247.203.166:7050",
+      "grpcOptions": {
+        "ssl-target-name-override": "orderer1.exchange.com",
+        "grpc-max-send-message-length": -1
+      },
+      "tlsCACerts": {
+        "path": "../../network/crypto-config/ordererOrganizations/exchange.com/orderers/orderer1.exchange.com/msp/tlscacerts/tlsca.exchange.com-cert.pem"
+      }
+    }
+  },
+  "peers": {
+    "peer0.korea.exchange.com": {
+      "url": "grpc://158.247.203.166:7051",
+      "tlsCACerts": {
+        "path": "../../network/crypto-config/peerOrganizations/korea.exchange.com/peers/peer0.korea.exchange.com/msp/tlscacerts/tlsca.korea.exchange.com-cert.pem"
+      },
+      "grpcOptions": {
+        "ssl-target-name-override": "peer1.korea.exchange.com",
+        "hostnameOverride": "peer1.korea.exchange.com"
+      }
+    }
+  },
+  "certificateAuthorities": {
+    "ca.korea.exchange.com": {
+      "url": "http://158.247.203.166",
+      "caName": "ca.korea.exchange.com",
+      "tlsCACerts": {
+        "path": "../../network/crypto-config/peerOrganizations/korea.exchange.com/ca/ca.korea.exchange.com-cert.pem"
+      },
+      "registrar": {
+        "enrollId": "admin",
+        "enrollSecret": "adminpw",
+        "caName": "cakorea"
+      },
+      "httpOptions": {
+        "verify": false
+      }
+    }
+  }
+}
