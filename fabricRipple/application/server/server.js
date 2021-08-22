@@ -1,13 +1,13 @@
 const express = require('express');
-const user = require('./api/user');
-const wallet = require('./api/wallet');
+const users = require('./api/users');
+const wallets = require('./api/wallets');
 const app = express();
 const port = 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/user', user);
-app.use('/wallet', wallet);
+app.use('/users', users);
+app.use('/wallets', wallets);
 
 app.get('/', (req, res) => {
     res.send('ripple exchange system on hyperledger fabric network');
