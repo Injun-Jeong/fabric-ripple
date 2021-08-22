@@ -45,8 +45,8 @@ async function send(txInfo, func, args, res) {
         } else {
             // query 함수 호출
             const result = await contract.evaluateTransaction(func, ...args);
-            console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-            res.send(result.toString());
+            console.log(`Transaction has been evaluated, result is: ${result}`);
+            res.status(200).send(JSON.parse(result.toString())[0]);
         }
 
     } catch(error) {
